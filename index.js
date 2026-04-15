@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
   const weatherApi = "https://api.weather.gov/alerts/active?area=";
-
   const btnFetch = document.getElementById("fetch-alerts");
   const alertDiv = document.getElementById("alerts-display");
   const errorDiv = document.getElementById("error-message");
 
   btnFetch.addEventListener("click", () => {
-    const input = document.getElementById("state-input");
-    const stateTxt = input.value;
+    const stateTxt = document.getElementById("state-input");
+    const state = stateTxt.value.trim();
 
-    if (stateTxt === stateTxt.toUpperCase() && stateTxt.length === 2) {
-      fetchWeatherAlerts(stateTxt);
-      input.value = "";
+    stateTxt.value = "";
+
+    if (state.length === 2 && state === state.toUpperCase()) {
+      fetchWeatherAlerts(state);
     } else {
       displayError("Invalid Input");
     }
@@ -21,37 +21,30 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(weatherApi + state)
       .then((response) => response.json())
       .then((data) => displayAlerts(data))
-      .catch((error) => displayError(error));
+      .catch((error) => displayError(error.message));
   }
 
   function displayAlerts(data) {
-    errorDiv.innerHTML = "";
-    errorDiv.classList.add("hidden");
-
     alertDiv.innerHTML = "";
+    errorDiv.classList.add("hidden");
+    errorDiv.innerHTML = "";
 
     const count = data.features.length;
 
     const header = document.createElement("h3");
     header.textContent = `Weather Alerts: ${count}`;
-    alertDiv.append(header);
+    alertDiv.appendChild(header);
 
     data.features.forEach((item) => {
       const p = document.createElement("p");
       p.textContent = item.properties.headline;
-      alertDiv.append(p);
+      alertDiv.appendChild(p);
     });
   }
 
   function displayError(message) {
     alertDiv.innerHTML = "";
-
     errorDiv.classList.remove("hidden");
-
-    if (typeof message === "string") {
-      errorDiv.innerText = message;
-    } else {
-      errorDiv.innerText = message.message;
-    }
+    errorDiv.textContent = message;
   }
 });
