@@ -10,10 +10,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
   // Your code here!
 
   btnFetch.addEventListener("click", () => {
-    // console.log(toString(stateTxt))
+    //errortDiv = ""
     const stateTxt = document.getElementById("state-input").value;
+    if(stateTxt == stateTxt.toUpperCase() && stateTxt.length === 2) {
     console.log(stateTxt);
     fetchWeatherAlerts(stateTxt);
+  }else {
+    
+    console.log("Error detected")
+    displayError("Invalid Input")
+  }
   });
 
   function fetchWeatherAlerts(state) {
@@ -30,29 +36,29 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
   function displayAlerts(data) {
-    const liElement = document.createElement("li")
-    // const pItem = document.createElement("p")
-    // const headerTitle = document.createElement("h1")
-    //  alertDiv.innerHTML = headerTitle.textContent(data.title)
+    errortDiv.innerHTML = ""
+    alertDiv.innerHTML = ""
+    const liElement = document.createElement("li");
+    const headerTitle = document.createElement("h3")
+    headerTitle.textContent = data.title
+    alertDiv.append(headerTitle)
     alertDiv.innerHTML = `<h3> ${data.title} <h3>`;
-    // headerTitle.textContent(data.title)
-    // liElement.append(headerTitle)
-
-    // console.log(data.title);
     for (let i = 0; i < data.features.length; i++) {
       const headlineInfo = data.features[i].properties.headline;
-      const pItem = document.createElement("p")
-        pItem.textContent = headlineInfo
-        liElement.append(pItem)
-        alertDiv.append(headlineInfo)
-    //   alertDiv.innerHTML = `<li> ${headlineInfo} <li>`;
-    //   alertDiv.append(`${headlineInfo}`)
+      const pItem = document.createElement("p");
+      pItem.textContent = headlineInfo;
+      alertDiv.append(pItem);
     }
   }
 
-  function displayError(error) {
-    errortDiv.innerHTML = error.message
+  function displayError(errormsg) {
+    console.log(`${errormsg}`)
+    alertDiv.innerHTML = ""
+    
+    // errortDiv.innerText = errormsg
+    // errortDiv.setVisibility = visible
+    const errItem = document.createElement("p");
+    errItem.textContent = errormsg
+    errortDiv.append(errItem)
   }
-
-  
 });
