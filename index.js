@@ -31,9 +31,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const count = data.features.length;
 
-    const header = document.createElement("h3");
-    header.textContent = `Weather Alerts: ${count}`;
-    alertDiv.appendChild(header);
+    const headerTitle = document.createElement("h3");
+    const headerCount = document.createElement("h3");
+     headerTitle.textContent = data.title;
+    headerCount.textContent = `Weather Alerts: ${count}`;
+    alertDiv.appendChild(headerTitle);
+    alertDiv.appendChild(headerCount);
 
     data.features.forEach((item) => {
       const p = document.createElement("p");
